@@ -1,8 +1,9 @@
 from django.shortcuts import render
 from django.forms.models import model_to_dict
-#from django.http import JsonResponse
-import json
+
+
 from products.models import Product
+from products.serializers import ProductSerializer
 
 from rest_framework.response import Response
 from rest_framework.decorators import api_view
@@ -10,10 +11,11 @@ from rest_framework.decorators import api_view
 @api_view(["GET"])
 def api_home(request, *args, **kwargs):
     # basically what we have now, is our py_client is 
-    model_data = Product.objects.all().order_by("?").first() # this would give random data, but i have the same price for my 2 prods rn
+    instance = Product.objects.all().order_by("?").first() # this would give random data, but i have the same price for my 2 prods rn
     data = {}
-    if model_data:
-         data = model_to_dict(model_data, fields=['id', 'title', 'price'])
+    if instance:
+         #data = model_to_dict(model_data, fields=['id', 'title', 'price'])
+         data = ProductSerializer(instance).data
          
     return Response(data)
 
