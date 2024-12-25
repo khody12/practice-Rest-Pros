@@ -10,7 +10,7 @@ endpoint = "http://localhost:8000/api/"
 # it will go inside that view and then do what the view says. right now, we have a view within api that imports data
 # from products, and it then returns the information to get_response. 
 
-get_response = requests.get(endpoint, params={"abc":123}, json={"query":"Hello world"}) # Application programming interface
+get_response = requests.post(endpoint, params={"abc":123}, json={"title":"Hello world", "price":"123"}) # Application programming interface
 
 #print(get_response.text) # printing out the source code / raw text response that we got from our request
 #print(get_response.status_code)
