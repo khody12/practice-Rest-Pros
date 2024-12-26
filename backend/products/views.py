@@ -31,6 +31,32 @@ class ProductDetailAPIView(generics.RetrieveAPIView):
     serializer_class = ProductSerializer
     # lookup_field = 'pk'
 
+class ProductUpdateAPIView(generics.UpdateAPIView):
+    # basically whats going on here is that within one of our py_clients, we now want to send a link
+    #to an endpoint that pertains to a specific product. so we have a url that has a <int:pk> to support generic products.
+    # this ProductDetailAPIview basically automates a lot of the process and allows us to simply set the queryset
+    # we also set the serializer, and that is it! now it will automatically send back the correct product when we go to the correct url. 
+    queryset = Product.objects.all()
+    serializer_class = ProductSerializer
+    # lookup_field = 'pk'
+    def perform_update(self, serializer):
+        instance = serializer.save()
+        if not instance.content:
+            instance.content = instance.title
+
+class ProductDestroyAPIView(generics.DestroyAPIView):
+    # basically whats going on here is that within one of our py_clients, we now want to send a link
+    #to an endpoint that pertains to a specific product. so we have a url that has a <int:pk> to support generic products.
+    # this ProductDetailAPIview basically automates a lot of the process and allows us to simply set the queryset
+    # we also set the serializer, and that is it! now it will automatically send back the correct product when we go to the correct url. 
+    queryset = Product.objects.all()
+    serializer_class = ProductSerializer
+    lookup_field = 'pk'
+    def perform_destroy(self, instance):
+        super().perform_destroy(instance)
+            
+
+
 class ProductListAPIView(generics.ListAPIView):
     queryset = Product.objects.all()
 
