@@ -3,7 +3,9 @@ from rest_framework.decorators import api_view
 from rest_framework.response import Response
 from django.shortcuts import get_object_or_404
 
+from api.authentication import TokenAuthentication
 from .models import Product
+from .permissions import isStaffEditorPermission
 
 from .serializers import ProductSerializer
 
@@ -29,8 +31,8 @@ class ProductMixinView(
 class ProductListCreateAPIView(generics.ListCreateAPIView):
     queryset = Product.objects.all()
     serializer_class = ProductSerializer
-    authentication_classes = [authentication.SessionAuthentication]
-    permission_classes = [permissions.DjangoModelPermissions]
+    authentication_classes = [authentication.SessionAuthentication, TokenAuthentication]
+    permission_classes = [isStaffEditorPermission]
 
     def perform_create(self, serializer): # if we want to assign something, 
         #say content is default blank, we can specifically assign it to something within this method
